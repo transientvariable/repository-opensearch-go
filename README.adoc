@@ -1,0 +1,36 @@
+= opensearch repository
+Matt Nicholls <transientvariable@protonmail.com>
+:keywords: golang,repository,database,persistence
+:experimental: true
+:icons: font
+:iconfont-cdn: //cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css
+:imagesdir: docs/image
+:sectanchors: true
+:source-highlighter: prettify
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+CAUTION: WIP
+
+== Overview
+
+Repository components and helpers in Go for link:https://github.com/opensearch-project[OpenSearch].
+
+== Installation
+
+.Prerequisites
+* The link:https://golang.org/dl/[Golang Runtime], version 1.24.x or later
+
+[source%nowrap,bash]
+----
+❯ go get -u github.com/transientvariable/repository-opensearch-go
+----
+
+== License
+This project is licensed under the link:LICENSE[MIT License].
