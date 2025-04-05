@@ -7,8 +7,7 @@ require (
 	github.com/json-iterator/go v1.1.12
 	github.com/opensearch-project/opensearch-go v1.1.0
 	github.com/transientvariable/anchor v0.0.0-20250331040147-31a7b773ebd9
-	github.com/transientvariable/cadre v0.0.0-20250404015443-32342e63731e
-	github.com/transientvariable/config-go v0.0.0-20250331030513-ea344f70c2d2
+	github.com/transientvariable/cadre v0.0.0-20250405034619-b0008ff13b70
 	github.com/transientvariable/log-go v0.0.0-20250331030700-56e504a9bfbc
 )
 
@@ -32,6 +31,7 @@ require (
 	github.com/rs/zerolog v1.34.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/timberio/go-datemath v0.1.0 // indirect
+	github.com/transientvariable/config-go v0.0.0-20250331030513-ea344f70c2d2 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
 	golang.org/x/sys v0.31.0 // indirect

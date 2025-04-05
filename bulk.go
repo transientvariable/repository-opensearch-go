@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/transientvariable/anchor"
-	"github.com/transientvariable/config-go"
 	"github.com/transientvariable/log-go"
 
 	"github.com/opensearch-project/opensearch-go"
@@ -50,9 +49,9 @@ func NewBulkIndexer(options ...func(*BulkIndexerOptions)) (*BulkIndexer, error) 
 
 	bulkConfig := opensearchutil.BulkIndexerConfig{
 		Client:        client,
-		FlushInterval: durationValue(BulkFlushInterval, DefaultFlushInterval),
-		FlushBytes:    int(sizeValue(BulkFlushSize, DefaultFlushSize)),
-		NumWorkers:    intValue(BulkWorkers, runtime.NumCPU()),
+		FlushInterval: durationValue(opts.flushInterval, DefaultFlushInterval),
+		FlushBytes:    intValue(opts.flushSize, DefaultFlushSize),
+		NumWorkers:    intValue(opts.workers, runtime.NumCPU()),
 		Refresh:       "true",
 		OnError: func(ctx context.Context, err error) {
 			log.Error("[opensearch] bulk error", log.Err(err))
@@ -72,7 +71,7 @@ func NewBulkIndexer(options ...func(*BulkIndexerOptions)) (*BulkIndexer, error) 
 		consumer:    opts.consumer,
 	}
 
-	if config.BoolMustResolve(BulkStatsEnable) {
+	if opts.statsEnable {
 		bulkIndexer.statsCtx, bulkIndexer.statsCancel = context.WithCancel(context.Background())
 		go func() {
 			bulkIndexer.logStats()
@@ -210,29 +209,16 @@ func configToJSON(config opensearchutil.BulkIndexerConfig) json.RawMessage {
 	})
 }
 
-func durationValue(path string, defaultValue time.Duration) time.Duration {
-	if v, err := config.Duration(path); err == nil {
-		if v > 0 {
-			return v
-		}
+func durationValue(value time.Duration, defaultValue time.Duration) time.Duration {
+	if value > 0 {
+		return value
 	}
 	return defaultValue
 }
 
-func intValue(path string, defaultValue int) int {
-	if v, err := config.Int(path); err == nil {
-		if v > 0 {
-			return v
-		}
-	}
-	return defaultValue
-}
-
-func sizeValue(path string, defaultValue int64) int64 {
-	if v, err := config.Size(path); err == nil {
-		if v > 0 {
-			return v
-		}
+func intValue(value int, defaultValue int) int {
+	if value > 0 {
+		return value
 	}
 	return defaultValue
 }

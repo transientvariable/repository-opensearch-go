@@ -68,6 +68,8 @@ github.com/transientvariable/anchor v0.0.0-20250331040147-31a7b773ebd9 h1:N2u1yB
 github.com/transientvariable/anchor v0.0.0-20250331040147-31a7b773ebd9/go.mod h1:aYgBWrpp0Lm7Yna5wiIA5O2epKqhArKKhhJRIVpVVRs=
 github.com/transientvariable/cadre v0.0.0-20250404015443-32342e63731e h1:Cc5ITwAXQmtauF3z1dSYn/s8YBRDxWDE5tyBppJ5Bek=
 github.com/transientvariable/cadre v0.0.0-20250404015443-32342e63731e/go.mod h1:wWnvVQ5AHB3xC66JN8nRU/OqbafmENaqpMNOsmGW59k=
+github.com/transientvariable/cadre v0.0.0-20250405034619-b0008ff13b70 h1:PjRFAaNcrz9A2CfCVmiixr1w+0nmrP7zjJbfKeMmPfg=
+github.com/transientvariable/cadre v0.0.0-20250405034619-b0008ff13b70/go.mod h1:dDf5VfeAdA1FWTJuu6d3JbOc2nsk6EohiIDB36sMwnE=
 github.com/transientvariable/config-go v0.0.0-20250331030513-ea344f70c2d2 h1:Yqr56lH3Vn0zVao1UxYeTFlgDzXrxUj/VeE3g5ehAqg=
 github.com/transientvariable/config-go v0.0.0-20250331030513-ea344f70c2d2/go.mod h1:n9s6XdGnp3QMxhsMtdCSlBRVniPT++JcyqPOBvn05NQ=
 github.com/transientvariable/log-go v0.0.0-20250331030700-56e504a9bfbc h1:VMuzk5GNADaoJJVaABQRlB1Bh+B9JJk658I8uhvAvE4=

@@ -7,12 +7,10 @@ import (
 	"fmt"
 	"io"
 	"strconv"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/transientvariable/anchor/net/http"
-	"github.com/transientvariable/config-go"
 	"github.com/transientvariable/log-go"
 
 	"github.com/cenkalti/backoff/v4"
@@ -28,28 +26,30 @@ var (
 )
 
 // NewClient creates a new OpenSearch cluster using the provided configuration and logger.
-func NewClient() *opensearch.Client {
+func NewClient(options ...func(*Option)) *opensearch.Client {
 	clientOnce.Do(func() {
+		opts := &Option{}
+		for _, opt := range options {
+			opt(opts)
+		}
+
 		txp := http.DefaultTransport()
 		txp.TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
 		clientConfig := opensearch.Config{
 			Transport: txp,
-			Addresses: strings.Split(config.ValueMustResolve(Addresses), ","),
-			Username:  config.ValueMustResolve(Username),
-			Password:  config.ValueMustResolve(Password),
+			Addresses: opts.addresses,
+			Username:  opts.username,
+			Password:  opts.password,
 		}
 
-		if config.BoolMustResolve(RetryEnable) {
+		if opts.retryEnable {
 			var retryStatus []int
-			values := strings.Split(config.ValueMustResolve(RetryStatus), ",")
-
-			for _, v := range values {
+			for _, v := range opts.retryStatus {
 				s, err := strconv.Atoi(v)
 				if err != nil {
 					log.Fatal("[opensearch] could not parse retry status", log.Err(err))
 				}
-
 				retryStatus = append(retryStatus, s)
 			}
 
@@ -60,8 +60,7 @@ func NewClient() *opensearch.Client {
 				}
 				return retryBackoff.NextBackOff()
 			}
-
-			clientConfig.MaxRetries = config.IntMustResolve(RetryMax)
+			clientConfig.MaxRetries = opts.retryMax
 		} else {
 			clientConfig.DisableRetry = true
 		}

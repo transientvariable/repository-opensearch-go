@@ -13,9 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/transientvariable/anchor"
 	"github.com/transientvariable/cadre/storage"
-	"github.com/transientvariable/config-go"
 	"github.com/transientvariable/log-go"
 	"github.com/transientvariable/repository-opensearch-go/bandaid"
 
@@ -41,15 +39,20 @@ type Repository struct {
 }
 
 // New creates a new OpenSearch Repository.
-func New() *Repository {
+func New(options ...func(*Option)) *Repository {
 	once.Do(func() {
+		opts := &Option{}
+		for _, opt := range options {
+			opt(opts)
+		}
+
 		client := NewClient()
-		if config.BoolMustResolve(MappingCreate) {
-			if err := prepareTemplates(client); err != nil {
+		if opts.mappingCreate {
+			if err := prepareTemplates(client, opts.mappingTemplatePath); err != nil {
 				log.Fatal("[opensearch] could not prepare templates", log.Err(err))
 			}
 
-			if err := prepareIndices(client); err != nil {
+			if err := prepareIndices(client, opts.mappingIndicesPath); err != nil {
 				log.Fatal("[opensearch] could not prepare indices", log.Err(err))
 			}
 		}
@@ -123,10 +126,8 @@ func (r *Repository) logQueryError(err error) error {
 	return err
 }
 
-func prepareTemplates(client *opensearch.Client) error {
-	templateDir := config.ValueMustResolve(MappingTemplatePath)
-
-	ecsTemplates, err := ReadTemplates(filepath.Join(templateDir, TemplateDirNameECS))
+func prepareTemplates(client *opensearch.Client, templatePath string) error {
+	ecsTemplates, err := ReadTemplates(filepath.Join(templatePath, TemplateDirNameECS))
 	if err != nil {
 		return err
 	}
@@ -136,7 +137,7 @@ func prepareTemplates(client *opensearch.Client) error {
 		return err
 	}
 
-	indexTemplates, err := ReadTemplates(filepath.Join(templateDir, TemplateDirNameIndex))
+	indexTemplates, err := ReadTemplates(filepath.Join(templatePath, TemplateDirNameIndex))
 	if err != nil {
 		return err
 	}
@@ -206,13 +207,13 @@ func applyIndexTemplates(client *opensearch.Client, templates ...*Template) erro
 	return nil
 }
 
-func prepareIndices(client *opensearch.Client) error {
+func prepareIndices(client *opensearch.Client, indexMappingPath string) error {
 	type indicesConfig struct {
 		DataStreams []string `json:"data_streams"`
 		Indices     []string `json:"indices"`
 	}
 
-	d, err := os.Open(config.ValueMustResolve(MappingIndicesPath))
+	d, err := os.Open(indexMappingPath)
 	if err != nil {
 		return err
 	}
@@ -301,18 +302,6 @@ func copyStrs(src []string) []string {
 	if len(src) > 0 {
 		dst := make([]string, len(src))
 		copy(dst, src)
-		return dst
-	}
-	return nil
-}
-
-func copyMapStrAny(src map[string]any) map[string]any {
-	if len(src) > 0 {
-		var dst map[string]any
-		err := json.Unmarshal(anchor.ToJSON(src), &dst)
-		if err != nil {
-			return map[string]any{"error": err.Error()}
-		}
 		return dst
 	}
 	return nil
