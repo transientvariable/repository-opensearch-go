@@ -25,7 +25,7 @@ import (
 
 const (
 	clusterInfoRetryInterval = 1 * time.Second
-	clusterInfoRetryMax      = 20
+	clusterInfoRetryMax      = 30
 )
 
 var (
