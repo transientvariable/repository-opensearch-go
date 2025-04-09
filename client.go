@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"github.com/transientvariable/anchor"
 	"io"
 	"strconv"
 	"sync"
@@ -70,6 +71,9 @@ func NewClient(options ...func(*Option)) *opensearch.Client {
 			log.Fatal("[opensearch] could not create cluster", log.Err(err))
 		}
 		client = c
+
+		log.Info(fmt.Sprintf("[opensearch] retrieving cluster info using nodes:\n%s",
+			anchor.ToJSONFormatted(clientConfig.Addresses)))
 
 		info, err := clusterInfo(client)
 		if err != nil {
