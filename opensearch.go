@@ -157,7 +157,7 @@ func applyComponentTemplates(client *opensearch.Client, templates ...*Template) 
 		}
 
 		if templateExistsResponse.StatusCode != http.StatusOK {
-			log.Debug("[opensearch] applying component template",
+			log.Info("[opensearch] applying component template",
 				log.String("name", template.Name()),
 				log.String("path", template.Path()))
 
@@ -170,7 +170,7 @@ func applyComponentTemplates(client *opensearch.Client, templates ...*Template) 
 				return errors.New(putComponentTemplateResponse.String())
 			}
 		} else {
-			log.Debug("[opensearch] component template exists, skipping creation",
+			log.Info("[opensearch] component template exists, skipping creation",
 				log.String("name", template.Name()),
 				log.String("path", template.Path()))
 		}
@@ -186,7 +186,7 @@ func applyIndexTemplates(client *opensearch.Client, templates ...*Template) erro
 		}
 
 		if templateExistsResponse.StatusCode != http.StatusOK {
-			log.Debug("[opensearch] applying index template",
+			log.Info("[opensearch] applying index template",
 				log.String("name", template.Name()),
 				log.String("path", template.Path()))
 
@@ -199,7 +199,7 @@ func applyIndexTemplates(client *opensearch.Client, templates ...*Template) erro
 				return errors.New(putIndexTemplateResponse.String())
 			}
 		} else {
-			log.Debug("[opensearch] index template exists, skipping creation",
+			log.Info("[opensearch] index template exists, skipping creation",
 				log.String("name", template.Name()),
 				log.String("path", template.Path()))
 		}
