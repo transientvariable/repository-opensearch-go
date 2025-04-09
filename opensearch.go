@@ -46,7 +46,7 @@ func New(options ...func(*Option)) *Repository {
 			opt(opts)
 		}
 
-		client := NewClient()
+		client := NewClient(options...)
 		if opts.mappingCreate {
 			if err := prepareTemplates(client, opts.mappingTemplatePath); err != nil {
 				log.Fatal("[opensearch] could not prepare templates", log.Err(err))
