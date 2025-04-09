@@ -76,7 +76,7 @@ func NewClient(options ...func(*Option)) *opensearch.Client {
 			log.Fatal("[opensearch] unable to fetch cluster info", log.Err(err))
 		}
 
-		log.Debug(fmt.Sprintf("[opensearch] cluster info:\n%s", info))
+		log.Info(fmt.Sprintf("[opensearch] cluster info:\n%s", info))
 	})
 	return client
 }
